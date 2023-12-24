@@ -32,6 +32,7 @@ class UserSeeder extends Seeder
                 'name' => 'Admin User',
                 'email' => 'admin@gmail.com',
                 'no_telp' => 1234567890,
+                'jabatan' => 'Admin',
                 'role_id' => $adminRoleId,
                 'password' => bcrypt('password'), // Replace 'password' with the actual password
                 'remember_token' => Str::random(10),
