@@ -1,0 +1,30 @@
+.custom-main-skills {
+    display: flex;
+    width: 50%;
+}
+
+#users-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#users-table th,
+#users-table td {
+    border: 1px solid #ffffff;
+    padding: 8px;
+    text-align: left;
+}
+
+#users-table th {
+    background-color: #ffffff;
+}
+
+/* #users-table tr:hover {
+    background-color: #f5f5f5;
+} */
+
+#users-table td.action {
+    text-align: center;
+}
+
+/* Add more styles as needed */

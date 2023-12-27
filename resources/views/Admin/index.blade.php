@@ -6,6 +6,15 @@
         <meta charset="UTF-8" />
         <title>Dashboard | By Code Info</title>
         <link rel="stylesheet" href="{{ asset('CSS/dashboard.css') }}">
+        <link rel="stylesheet" href="{{ asset('CSS/navbardash.css') }}">
+        <!-- Include jQuery -->
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+        <!-- Include DataTables -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
+        <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+
         <!-- Font Awesome Cdn Link -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     </head>
@@ -22,9 +31,9 @@
                             <i class="fas fa-home"></i>
                             <span class="nav-item">Home</span>
                         </a></li>
-                    <li><a href="">
+                    <li><a href="{{ url('/admin/users') }}">
                             <i class="fas fa-user"></i>
-                            <span class="nav-item">Profile</span>
+                            <span class="nav-item">Users</span>
                         </a></li>
                     <li><a href="">
                             <i class="fas fa-wallet"></i>
@@ -54,11 +63,11 @@
             </nav>
 
             <section class="main">
-                <div class="main-top">
+                {{-- <div class="main-top">
                     <h1>Skills</h1>
                     <i class="fas fa-user-cog"></i>
-                </div>
-                <div class="main-skills">
+                </div> --}}
+                {{-- <div class="main-skills">
                     <div class="card">
                         <i class="fas fa-laptop-code"></i>
                         <h3>Web developemt</h3>
@@ -83,8 +92,8 @@
                         <p>Join Over 1 million Students.</p>
                         <button>Get Started</button>
                     </div>
-                </div>
-
+                </div> --}}
+                @yield('main-skills')
                 {{-- <section class="main-course">
         <h1>My courses</h1>
         <div class="course-box">

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardAdminController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,9 +22,14 @@ use App\Http\Controllers\DashboardAdminController;
 
 Route::get('/', [LoginController::class, 'viewLogin'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
-Route::get('logout', [LoginController::class, 'logout'])->name('logout');
+Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+// Route::get('logout', [LoginController::class, 'logout']);
 
 Route::middleware([checkRole::class.':admin'])->group(function () {
     Route::get('/admin', [DashboardAdminController::class, 'viewAdmin']);
+
+    Route::get('/admin/users', [UserController::class, 'index']);
+    Route::get('/admin/users/data', [UserController::class, 'getUsersData'])->name('users.data');
+    Route::post('/admin/users/send-qrcode-email', [UserController::class, 'sendQrCodeEmail'])->name('send.qrcode.email');
     // Other admin routes...
 });

@@ -51,7 +51,7 @@ class LoginController extends Controller
             // }
             $roleName = $user->role->name;
 
-            if ($roleName == 'admin' || $roleName == 'pegawai' || $roleName == 'satpam') {
+            if ($roleName == 'admin' || $roleName == 'pegawai' || $roleName == 'kasubagumum') {
                 return redirect('/' . $roleName);
             } else {
                 return redirect('/default'); // Redirect to a default page for unknown roles

@@ -8,6 +8,6 @@ class DashboardAdminController extends Controller
 {
     public function ViewAdmin(){
         // dd(session());
-        return view('Admin/index');
+        return view('Admin/layouts/index');
     }
 }

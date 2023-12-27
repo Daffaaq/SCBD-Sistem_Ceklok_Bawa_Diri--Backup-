@@ -19,18 +19,20 @@ class UserSeeder extends Seeder
         DB::table('roles')->insert([
             ['name' => 'admin'],
             ['name' => 'pegawai'],
+            ['name' => 'kasubagumum'],
             // Add more roles as needed
         ]);
 
         // Get role IDs
         $adminRoleId = DB::table('roles')->where('name', 'admin')->first()->id;
-        // $pegawaiRoleId = DB::table('roles')->where('name', 'pegawai')->first()->id;
+        $pegawaiRoleId = DB::table('roles')->where('name', 'pegawai')->first()->id;
+        $kasubagumumRoleId = DB::table('roles')->where('name', 'kasubagumum')->first()->id;
 
         DB::table('users')->insert([
             [
                 'uuid' => Str::uuid(),
                 'name' => 'Admin User',
-                'email' => 'admin@gmail.com',
+                'email' => 'daffaaqila48@gmail.com',
                 'no_telp' => 1234567890,
                 'jabatan' => 'Admin',
                 'role_id' => $adminRoleId,
@@ -42,7 +44,18 @@ class UserSeeder extends Seeder
             //     'name' => 'Pegawai User',
             //     'email' => 'pegawai@example.com',
             //     'no_telp' => 1234567891,
+            //     'jabatan' => 'Pegawai',
             //     'role_id' => $pegawaiRoleId,
+            //     'password' => bcrypt('password'), // Replace 'password' with the actual password
+            //     'remember_token' => Str::random(10),
+            // ],
+            // [
+            //     'uuid' => Str::uuid(),
+            //     'name' => 'Kasubagumum User',
+            //     'email' => 'kasubagumum@example.com',
+            //     'no_telp' => 1234567892,
+            //     'jabatan' => 'Kasubagumum',
+            //     'role_id' => $kasubagumumRoleId,
             //     'password' => bcrypt('password'), // Replace 'password' with the actual password
             //     'remember_token' => Str::random(10),
             // ],
