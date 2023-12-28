@@ -31,6 +31,9 @@ Route::middleware([checkRole::class.':admin'])->group(function () {
     Route::get('/admin/users', [UserController::class, 'index']);
     Route::get('/admin/users/create', [UserController::class, 'create']);
     Route::post('/admin/users/store', [UserController::class, 'store']);
+    Route::get('/admin/users/edit/{id}', [UserController::class, 'edit']);
+    Route::put('/admin/users/{id}/update', [UserController::class, 'update']);
+    Route::delete('/admin/users/delete/{id}', [UserController::class, 'destroy']);
     Route::get('/admin/users/data', [UserController::class, 'getUsersData'])->name('users.data');
     Route::post('/admin/users/send-qrcode-email', [UserController::class, 'sendQrCodeEmail'])->name('send.qrcode.email');
     // Other admin routes...

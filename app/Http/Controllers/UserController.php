@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\role;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Mail;
@@ -55,6 +56,89 @@ class UserController extends Controller
         return redirect('/admin/users')->with('success', 'User created successfully.');
     }
 
+    public function edit($id)
+    {
+        // Temukan pengguna berdasarkan ID
+        $user = User::find($id);
+
+        // Periksa apakah pengguna ditemukan
+        if (!$user) {
+            return redirect('/admin/users')->with('error', 'User not found.');
+        }
+
+        return view('Admin.User.edit', compact('user'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        // Validasi input
+        $this->validate($request, [
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users,email,' . $id,
+            'no_telp' => 'required|numeric',
+            'jabatan' => 'required|string',
+            'role_name' => 'required|in:admin,pegawai,kasubagumum',
+            'password' => 'nullable|min:8', // Jika ingin memperbarui password, harus diisi
+        ]);
+
+        // Temukan pengguna berdasarkan ID
+        $user = User::find($id);
+
+        // Periksa apakah pengguna ditemukan
+        if (!$user) {
+            return redirect('/admin/users')->with('error', 'User not found.');
+        }
+
+        // Temukan peran baru berdasarkan nama rolenya
+        $role = Role::where('name', $request->input('role_name'))->first();
+
+        // Periksa apakah peran ditemukan
+        if (!$role) {
+            return redirect('/admin/users')->with('error', 'Invalid role.');
+        }
+
+        // Update data pengguna
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->no_telp = $request->input('no_telp');
+        $user->jabatan = $request->input('jabatan');
+        $user->role_id = $role->id;
+
+        // Periksa apakah password diisi sebelum memperbarui
+        if ($request->has('password')) {
+            $user->password = bcrypt($request->input('password'));
+        }
+
+        // Simpan perubahan
+        $user->save();
+
+        return redirect('/admin/users')->with('success', 'User updated successfully.');
+    }
+
+    public function destroy($id)
+    {
+        // Temukan pengguna berdasarkan ID
+        $user = User::find($id);
+
+        // Periksa apakah pengguna ditemukan
+        if (!$user) {
+            return response()->json(['error' => 'User not found.'], 404);
+        }
+
+        // Hapus pengguna
+        DB::beginTransaction();
+        try {
+            $user->delete();
+            DB::commit();
+
+            return response()->json(['success' => 'User deleted successfully.']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json(['error' => 'Failed to delete user.'], 500);
+        }
+    }
+
     public function sendQrCodeEmail(Request $request)
     {
         $userId = $request->input('userId'); // Sesuaikan dengan kolom ID yang sesuai
@@ -99,9 +183,15 @@ class UserController extends Controller
                 // $qrcode = QrCode::size(150)->generate($user->name);
                 $qrcode = QrCode::size(150)->generate("Pinjam Dulu Seratus");
                 $qrcodeImage = 'data:image/png;base64,' . base64_encode($qrcode); // Convert QR code to base64
-                return "<a href='#' data-toggle='modal' data-target='#qrcodeModal' data-qrcode='$qrcodeImage'>
-                    <button class='btn btn-sm btn-info'>View</button>
-                </a>";
+                return "<div class='d-flex justify-content-between align-items-center'>
+                    <a href='#' data-toggle='modal' data-target='#qrcodeModal' data-qrcode='$qrcodeImage'>
+                        <button class='btn btn-sm btn-info'>View</button>
+                    </a>
+                    <a href='" . url('/admin/users/edit/' . $user->id) . "'>
+                        <button class='btn btn-sm btn-primary'>Edit</button>
+                    </a> <button class='btn btn-sm btn-danger' onclick='deleteUser($user->id)'>Delete</button>
+                </div>";
+
             } else {
                 // Handle the case where ID is null (optional)
                 return "<span class='text-danger'>ID is null</span>";

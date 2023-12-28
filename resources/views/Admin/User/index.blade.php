@@ -111,5 +111,27 @@
                 });
             });
         });
+
+        function deleteUser(userId) {
+            if (confirm('Are you sure you want to delete this user?')) {
+                // Send an AJAX request to delete the user
+                $.ajax({
+                    url: '{{ url('/admin/users/delete') }}/' + userId,
+                    method: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        // Reload the DataTable
+                        $('#users-table').DataTable().ajax.reload();
+                        alert('User deleted successfully!');
+                    },
+                    error: function(error) {
+                        console.error('Error deleting user:', error);
+                        alert('Failed to delete user!');
+                    }
+                });
+            }
+        }
     </script>
 @endsection
