@@ -28,13 +28,18 @@ Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 Route::middleware([checkRole::class.':admin'])->group(function () {
     Route::get('/admin', [DashboardAdminController::class, 'viewAdmin']);
 
-    Route::get('/admin/users', [UserController::class, 'index']);
-    Route::get('/admin/users/create', [UserController::class, 'create']);
-    Route::post('/admin/users/store', [UserController::class, 'store']);
-    Route::get('/admin/users/edit/{id}', [UserController::class, 'edit']);
-    Route::put('/admin/users/{id}/update', [UserController::class, 'update']);
-    Route::delete('/admin/users/delete/{id}', [UserController::class, 'destroy']);
-    Route::get('/admin/users/data', [UserController::class, 'getUsersData'])->name('users.data');
-    Route::post('/admin/users/send-qrcode-email', [UserController::class, 'sendQrCodeEmail'])->name('send.qrcode.email');
+    Route::prefix('admin')->group(function () {
+        Route::get('/users', [UserController::class, 'index']);
+        Route::get('/users/create', [UserController::class, 'create']);
+        Route::post('/users/store', [UserController::class, 'store']);
+        Route::get('/users/edit/{id}', [UserController::class, 'edit']);
+        Route::put('/users/{id}/update', [UserController::class, 'update']);
+        Route::delete('/users/delete/{id}', [UserController::class, 'destroy']);
+        Route::get('/users/data', [UserController::class, 'getUsersData'])->name('users.data');
+        Route::post('/users/send-qrcode-email', [UserController::class, 'sendQrCodeEmail'])->name('send.qrcode.email');
+    });
+    Route::prefix('admin')->group(function () {
+        Route::get('profiles', [UserController::class, 'profile']);
+    });
     // Other admin routes...
 });

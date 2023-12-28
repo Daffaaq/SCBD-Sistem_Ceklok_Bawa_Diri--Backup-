@@ -16,65 +16,48 @@ class LoginController extends Controller
     }
     // use AuthenticatesUsers;
 
-    public function __construct()
-    {
-        $this->middleware('guest')->except('logout');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('guest')->except('logout');
+    // }
 
     public function login(Request $request)
-    {
-        $credentials = $request->only('email', 'password');
-        $nameCredentials = ['name' => $credentials['email'], 'password' => $credentials['password']];
+{
+    $credentials = $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
 
-        if (Auth::attempt($credentials)|| Auth::attempt($nameCredentials)) {
-            $user = Auth::user();
-            // Retrieve the user based on email and password
-            $databaseUser = User::where('password', $credentials['password'])->first();
+    // Fetch user with eager loaded role
+    $user = User::with('role')->where('email', $credentials['email'])->first();
 
-        // Check if the UUID matches
-        if ($databaseUser && $user->uuid !== $databaseUser->uuid) {
-            Auth::logout();
-            return back()->withErrors([
-                'uuid' => 'The provided UUID does not match our records.',
-            ]);
+    // Authenticate user
+    if (Auth::attempt($credentials)) {
+        $request->session()->regenerate();
+
+        // Access role from the loaded relationship
+        $roleName = $user->role->name;
+
+        if ($roleName == 'admin' || $roleName == 'pegawai' || $roleName == 'kasubagumum') {
+            return redirect('/' . $roleName);
+        } else {
+            return redirect('/default');
         }
-            // Authentication passed...
-            $request->session()->put('name', $user->name);
-            $request->session()->put('email', $user->email);
-            $request->session()->put('no_telp', $user->no_telp);
-            $request->session()->put('role', $user->role->name);
-
-            // if ($user->role->name == 'admin') {
-            //     return redirect('/admin');
-            // } elseif ($user->role->name == 'pegawai') {
-            //     return redirect('/pegawai');
-            // }
-            $roleName = $user->role->name;
-
-            if ($roleName == 'admin' || $roleName == 'pegawai' || $roleName == 'kasubagumum') {
-                return redirect('/' . $roleName);
-            } else {
-                return redirect('/default'); // Redirect to a default page for unknown roles
-            }
-
-
-            return redirect('/');
-        }
-
-        // Authentication failed...
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ]);
     }
 
-    public function logout(Request $request)
-    {
-        Auth::logout();
+    return back()->with('LoginFailed', 'Login Failed');
+}
+
+
+public function logout(Request $request)
+{
+    Auth::logout();
 
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
 
         return redirect('/');
-    }
+}
+
 }

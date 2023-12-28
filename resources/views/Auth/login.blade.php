@@ -42,7 +42,7 @@
 
                             <div class="form-outline mb-4">
                                 <label class="form-label" for="form2Example18">Email address / Username</label>
-                                <input type="text" id="form2Example18" class="form-control form-control-lg"
+                                <input type="email" id="form2Example18" class="form-control form-control-lg"
                                     name="email" />
                             </div>
 
