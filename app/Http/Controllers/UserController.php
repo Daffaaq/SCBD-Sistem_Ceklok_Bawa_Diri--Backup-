@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\role;
+use App\Http\Requests\UserStoreRequest;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
@@ -23,17 +24,8 @@ class UserController extends Controller
         return view('Admin.User.create');
     }
 
-    public function store(Request $request)
+    public function store(UserStoreRequest $request)
     {
-        $this->validate($request, [
-            'name' => 'required|string',
-            'email' => 'required|email|unique:users',
-            'no_telp' => 'required|numeric',
-            'jabatan' => 'required|string',
-            'role_name' => 'required|in:admin,pegawai,kasubagumum', // Adjust if more roles are added
-            'password' => 'required|min:8',
-        ]);
-
         $role = Role::where('name', $request->input('role_name'))->first();
 
         if (!$role) {
@@ -71,16 +63,6 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Validasi input
-        $this->validate($request, [
-            'name' => 'required|string',
-            'email' => 'required|email|unique:users,email,' . $id,
-            'no_telp' => 'required|numeric',
-            'jabatan' => 'required|string',
-            'role_name' => 'required|in:admin,pegawai,kasubagumum',
-            'password' => 'nullable|min:8', // Jika ingin memperbarui password, harus diisi
-        ]);
-
         // Temukan pengguna berdasarkan ID
         $user = User::find($id);
 
@@ -166,6 +148,7 @@ class UserController extends Controller
     public function getUsersData()
     {
         $users = User::leftJoin('roles', 'users.role_id', '=', 'roles.id')
+            // ->where('roles.name', '!=', 'admin')
             ->select([
                 'users.id',
                 'users.name',
