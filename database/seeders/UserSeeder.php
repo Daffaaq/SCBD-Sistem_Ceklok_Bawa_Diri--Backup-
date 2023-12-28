@@ -39,26 +39,26 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('password'), // Replace 'password' with the actual password
                 'remember_token' => Str::random(10),
             ],
-            // [
-            //     'uuid' => Str::uuid(),
-            //     'name' => 'Pegawai User',
-            //     'email' => 'pegawai@example.com',
-            //     'no_telp' => 1234567891,
-            //     'jabatan' => 'Pegawai',
-            //     'role_id' => $pegawaiRoleId,
-            //     'password' => bcrypt('password'), // Replace 'password' with the actual password
-            //     'remember_token' => Str::random(10),
-            // ],
-            // [
-            //     'uuid' => Str::uuid(),
-            //     'name' => 'Kasubagumum User',
-            //     'email' => 'kasubagumum@example.com',
-            //     'no_telp' => 1234567892,
-            //     'jabatan' => 'Kasubagumum',
-            //     'role_id' => $kasubagumumRoleId,
-            //     'password' => bcrypt('password'), // Replace 'password' with the actual password
-            //     'remember_token' => Str::random(10),
-            // ],
+            [
+                'uuid' => Str::uuid(),
+                'name' => 'Pegawai User',
+                'email' => 'pegawai@gmail.com',
+                'no_telp' => 1234567891,
+                'jabatan' => 'Pegawai',
+                'role_id' => $pegawaiRoleId,
+                'password' => bcrypt('password'), // Replace 'password' with the actual password
+                'remember_token' => Str::random(10),
+            ],
+            [
+                'uuid' => Str::uuid(),
+                'name' => 'Kasubagumum User',
+                'email' => 'kasubagumum@gamil.com',
+                'no_telp' => 1234567892,
+                'jabatan' => 'Kasubagumum',
+                'role_id' => $kasubagumumRoleId,
+                'password' => bcrypt('password'), // Replace 'password' with the actual password
+                'remember_token' => Str::random(10),
+            ],
             // Add more users as needed
         ]);
     }

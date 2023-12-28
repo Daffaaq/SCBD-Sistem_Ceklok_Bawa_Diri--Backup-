@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\role;
+use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Mail;
@@ -15,6 +17,42 @@ class UserController extends Controller
     public function index(){
         
         return view('Admin.User.index');
+    }
+    public function create(){
+        return view('Admin.User.create');
+    }
+
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users',
+            'no_telp' => 'required|numeric',
+            'jabatan' => 'required|string',
+            'role_name' => 'required|in:admin,pegawai,kasubagumum', // Adjust if more roles are added
+            'password' => 'required|min:8',
+        ]);
+
+        $role = Role::where('name', $request->input('role_name'))->first();
+
+        if (!$role) {
+            return response()->json(['error' => 'Invalid role.'], 400);
+        }
+
+        $user = new User([
+            'uuid' => Str::uuid(),
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'no_telp' => $request->input('no_telp'),
+            'jabatan' => $request->input('jabatan'),
+            'role_id' => $role->id,
+            'password' => bcrypt($request->input('password')),
+            'remember_token' => Str::random(10),
+        ]);
+
+        $user->save();
+
+        return redirect('/admin/users')->with('success', 'User created successfully.');
     }
 
     public function sendQrCodeEmail(Request $request)

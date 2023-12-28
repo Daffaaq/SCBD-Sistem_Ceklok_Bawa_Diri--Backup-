@@ -1,26 +1,12 @@
 @extends('Admin.layouts.index')
 
 @section('container')
-    {{-- <div class="custom-main-skills">
-        <h1>User Management</h1>
-        <table class="table table-bordered" id="users-table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Jabatan</th>
-                    <th>No Telepon</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-        </table>
-    </div> --}}
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">User Management</h6>
         </div>
         <div class="card-body">
+            <a href="{{ url('/admin/users/create') }}" class="btn btn-success float-right mb-3">Create User</a>
             <div class="table-responsive">
                 <table class="table table-bordered" id="users-table" width="100%" cellspacing="0">
                     <thead>

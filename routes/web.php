@@ -29,6 +29,8 @@ Route::middleware([checkRole::class.':admin'])->group(function () {
     Route::get('/admin', [DashboardAdminController::class, 'viewAdmin']);
 
     Route::get('/admin/users', [UserController::class, 'index']);
+    Route::get('/admin/users/create', [UserController::class, 'create']);
+    Route::post('/admin/users/store', [UserController::class, 'store']);
     Route::get('/admin/users/data', [UserController::class, 'getUsersData'])->name('users.data');
     Route::post('/admin/users/send-qrcode-email', [UserController::class, 'sendQrCodeEmail'])->name('send.qrcode.email');
     // Other admin routes...
