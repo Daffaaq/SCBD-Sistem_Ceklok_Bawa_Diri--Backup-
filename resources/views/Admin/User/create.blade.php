@@ -78,4 +78,16 @@
             </div>
         </div>
     </div>
+    <script>
+        // Add an event listener to the role select element
+        document.getElementById('role_name').addEventListener('change', function() {
+            // Get the selected role
+            var selectedRole = this.value;
+
+            // Set the default job title only if the selected role is "admin"
+            if (selectedRole === 'admin') {
+                document.getElementById('jabatan').value = 'Administrator';
+            }
+        });
+    </script>
 @endsection
