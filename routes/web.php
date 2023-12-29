@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardAdminController;
+use App\Http\Controllers\DashboardPegawaiController;
+use App\Http\Controllers\Absensi_DatangController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -40,6 +42,13 @@ Route::middleware([checkRole::class.':admin'])->group(function () {
     });
     Route::prefix('admin')->group(function () {
         Route::get('profiles', [UserController::class, 'profile']);
+    });
+    // Other admin routes...
+});
+Route::middleware([checkRole::class.':pegawai'])->group(function () {
+    Route::get('/pegawai', [DashboardPegawaiController::class, 'ViewPegawai']);
+    Route::prefix('pegawai')->group(function () {
+        Route::get('/absensi', [Absensi_DatangController::class, 'index']);
     });
     // Other admin routes...
 });

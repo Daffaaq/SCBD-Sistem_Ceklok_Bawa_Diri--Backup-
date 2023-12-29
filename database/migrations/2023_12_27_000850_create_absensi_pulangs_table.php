@@ -16,7 +16,11 @@ return new class extends Migration
         Schema::create('absensi_pulangs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('name');
+             $table->time('absensi_pulang_time')->nullable(); // Tambahkan nullable agar bisa diisi null
+            $table->date('absensi_pulang_date')->nullable(); // Tambahkan nullable agar bisa diisi null
+            $table->string('qr_code_pulang')->nullable();
+            $table->string('longitude_pulang')->nullable();
+            $table->string('latitude_pulang')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
