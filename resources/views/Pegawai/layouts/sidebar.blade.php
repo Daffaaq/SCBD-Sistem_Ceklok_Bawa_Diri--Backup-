@@ -36,16 +36,10 @@
             <li class="nav-item">
                 <a class="nav-link" href="{{ url('/pegawai/absensi') }}">
                     <i class="fas fa-fw fa-exclamation-triangle"></i>
-                    <span>Absensi Datang</span></a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="fas fa-fw fa-check"></i>
-                    <span>Absensi Pulang</span></a>
+                    <span>Absensi</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{ url('/pegawai/rekap') }}">
                     <i class="fas fa-fw fa-check"></i>
                     <span>Rekap Absensi</span></a>
             </li>

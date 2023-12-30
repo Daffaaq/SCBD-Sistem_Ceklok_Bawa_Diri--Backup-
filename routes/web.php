@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardAdminController;
 use App\Http\Controllers\DashboardPegawaiController;
-use App\Http\Controllers\Absensi_DatangController;
+use App\Http\Controllers\AttendenceController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -48,7 +48,13 @@ Route::middleware([checkRole::class.':admin'])->group(function () {
 Route::middleware([checkRole::class.':pegawai'])->group(function () {
     Route::get('/pegawai', [DashboardPegawaiController::class, 'ViewPegawai']);
     Route::prefix('pegawai')->group(function () {
-        Route::get('/absensi', [Absensi_DatangController::class, 'index']);
+        Route::get('/absensi', [AttendenceController::class, 'index']);
+        Route::post('/absensi/store', [AttendenceController::class, 'store']);
+    });
+    Route::prefix('pegawai')->group(function () {
+        Route::get('/rekap', [AttendenceController::class, 'recapAttendence']);
+        Route::get('/rekap/data', [AttendenceController::class, 'getRecapAttendence'])->name('get.recap.attendance');
+        Route::delete('/rekap/delete/{id}', [AttendenceController::class, 'destroy']);
     });
     // Other admin routes...
 });
